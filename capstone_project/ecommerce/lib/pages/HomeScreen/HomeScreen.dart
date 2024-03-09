@@ -1,3 +1,4 @@
+import 'package:ecommerce/pages/HomeScreen/featured.dart';
 import 'package:ecommerce/pages/HomeScreen/mostPopular.dart';
 import 'package:ecommerce/pages/HomeScreen/updates.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   TextStyle(color: Colors.grey, fontSize: 20)),
             ),
            const Updates(),
+           const FeaturedPart(),
            const MostPopular(),
           ],
         ));
