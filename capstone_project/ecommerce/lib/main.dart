@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ecommerce/pages/HomePage.dart';
+import 'package:ecommerce/pages/General_Screen.dart';
 void main() {
-  runApp( MaterialApp(
+  runApp( const MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: HomePage(),
+    home: General_Screen(),
   ));
 }
