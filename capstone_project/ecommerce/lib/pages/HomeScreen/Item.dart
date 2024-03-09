@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ecommerce/data/item_on_front_page.dart';
 
 class Item extends StatefulWidget {
   const Item(this.imageURL, this.itemName, this.cost, {super.key});
