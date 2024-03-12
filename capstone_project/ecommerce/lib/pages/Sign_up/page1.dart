@@ -16,10 +16,10 @@ class _WelcomePageState extends State<WelcomePage> {
 
   // Data for each page
   final List<String > imageURL = [
-    "assets/image/front_girl.png",
-    "assets/image/front_girl.png",
-    "assets/image/front_girl.png",
-    "assets/image/front_girl.png",
+    "FrontPage_asset/image/front_girl.png",
+    "FrontPage_asset/image/front_girl.png",
+    "FrontPage_asset/image/front_girl.png",
+    "FrontPage_asset/image/front_girl.png",
   ];
   @override
   Widget build(BuildContext context) {

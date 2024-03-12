@@ -17,13 +17,13 @@ class _UpdatesState extends State<Updates> {
       'title': "Get Winter Discount",
       'subtitle': "20% off",
       'description': "For children",
-      'imagePath': "assets/image/front_girl.png",
+      'imagePath': "FrontPage_asset/image/front_girl.png",
     },
     {
       'title': "Summer Sale",
       'subtitle': "30% off",
       'description': "For adults",
-      'imagePath': "assets/image/front_girl.png",
+      'imagePath': "FrontPage_asset/image/front_girl.png",
     },
     // Add more pages as needed
   ];

@@ -1,174 +1,144 @@
+// import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
-
 class SignUp_Screen extends StatefulWidget {
-  
-  SignUp_Screen( {super.key});
+  SignUp_Screen({super.key});
 
   @override
   State<SignUp_Screen> createState() => _SignUp_ScreenState();
 }
 
 class _SignUp_ScreenState extends State<SignUp_Screen> {
-  FocusNode _focusNode1 = FocusNode();
-  FocusNode _focusNode2 = FocusNode();
-  FocusNode _focusNode3 = FocusNode();
-
   final email = TextEditingController();
+  final username = TextEditingController();
   final password = TextEditingController();
   final PasswordConfirm = TextEditingController();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _focusNode1.addListener(() {
-      setState(() {});
-    });
-    _focusNode2.addListener(() {
-      setState(() {});
-    });
-    _focusNode3.addListener(() {
-      setState(() {});
-    });
-  }
-
+  bool ischecked = false;
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.amber,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 20),
-              image(),
-              SizedBox(height: 50),
-              textfield(email, _focusNode1, 'Email', Icons.email),
-              SizedBox(height: 10),
-              textfield(password, _focusNode2, 'Password', Icons.password),
-              SizedBox(height: 10),
-              textfield(PasswordConfirm, _focusNode3, 'PasswordConfirm',
-                  Icons.password),
-              SizedBox(height: 8),
-              account(),
-              SizedBox(height: 20),
-              SignUP_bottom(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget account() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(
-            "Don you have an account?",
-            style: TextStyle(color: Colors.grey[700], fontSize: 14),
-          ),
-          SizedBox(width: 5),
-          GestureDetector(
-            onTap: (){},
-            child: Text(
-              'Login',
+          child: Padding(
+        padding: EdgeInsets.only(top: height * 0.05, left: width*0.1,right:  width*0.1),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text("Getting Started",
+                style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold)),
+            Text(
+              "Create an account to continue",
               style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget SignUP_bottom() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: GestureDetector(
-        onTap: () {
-          
-        },
-        child: Container(
-          alignment: Alignment.center,
-          width: double.infinity,
-          height: 50,
-          decoration: BoxDecoration(
-            color: Colors.green,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Text(
-            'Sign Up',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 23,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget textfield(TextEditingController _controller, FocusNode _focusNode,
-      String typeName, IconData iconss) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: TextField(
-          controller: _controller,
-          focusNode: _focusNode,
-          style: TextStyle(fontSize: 18, color: Colors.black),
-          decoration: InputDecoration(
-              prefixIcon: Icon(
-                iconss,
-                color: _focusNode.hasFocus ? Colors.green: Color(0xffc5c5c5),
+                color: Colors.black.withOpacity(0.5),
               ),
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              hintText: typeName,
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: Color(0xffc5c5c5),
-                  width: 2.0,
-                ),
+            ),
+            SizedBox(height: height*0.03,),
+            Text("Email",style: TextStyle(color:  Colors.black.withOpacity(0.5)),),
+            textfield("example@gmail.com", Icons.email_outlined, email,
+                TextInputType.emailAddress,),
+            SizedBox(height: height*0.03,),
+            Text("Username",style: TextStyle(color:  Colors.black.withOpacity(0.5)),),
+            textfield("username", Icons.person_4_outlined, username,
+                TextInputType.text,suffixIcon: Icons.done),
+             SizedBox(height: height*0.03,),
+            Text("Password",style: TextStyle(color:  Colors.black.withOpacity(0.5)),),
+            textfield( "*********", Icons.lock_outline, password,
+                TextInputType.visiblePassword,suffixIcon: Icons.lock_outline),
+            SizedBox(height: height*0.03,),
+             Row(
+              children: [
+                Checkbox(value: ischecked, onChanged: (bool? value) {
+                    setState(() {
+                      ischecked = value!;
+                    });
+                  },),
+                  SizedBox(width: width*0.01,),
+                const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                Text("By creating an account, you agree to our "),
+                Text("Terms & Conditions",style: TextStyle(fontWeight: FontWeight.bold),)
+                  ],
+                 )
+                  ],
+            ),
+            SizedBox(height: height*0.2,),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+               SizedBox(
+              height: height * 0.05,
+              width: width * 0.6,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignUp_Screen()));
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0XFF6055D8)),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Sign up ",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Icon(
+                      Icons.subdirectory_arrow_right,
+                      color: Colors.white,
+                      size: 30,
+                    )
+                  ],
+                ), // Add your button text here
               ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: Colors.green,
-                  width: 2.0,
+            ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                   const Text("Already have an account? "),
+                    GestureDetector(
+                      onTap: (){}
+                      ,child:const Text("Sign in",style: TextStyle(color:  Color(0XFF6055D8)),),)
+                  ],
                 ),
-              )),
+              ],
+            ),
+            
+          ],
         ),
-      ),
+      )),
     );
   }
+}
 
-  Widget image() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Container(
-        width: double.infinity,
-        height: 300,
-        decoration: BoxDecoration(
-          color: Colors.amber,
-          image: DecorationImage(
-            image: AssetImage('images/7.png'),
-            fit: BoxFit.fitWidth,
-          ),
-        ),
+Widget textfield(
+  String hint,
+  IconData icon,
+  TextEditingController controller,
+  TextInputType keyboardType, {
+  IconData? suffixIcon,
+}) {
+  return TextField(
+    controller: controller,
+    keyboardType: keyboardType,
+    decoration: InputDecoration(
+      hintText: hint,
+      hintStyle: const TextStyle(
+        fontStyle: FontStyle.italic,
       ),
-    );
-  }
+      prefixIcon: Icon(icon),
+      suffixIcon: (suffixIcon != null) ? Icon(suffixIcon) : null,
+      border: const UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.grey),
+      ),
+      enabledBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.grey),
+      ),
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(color:  Color(0XFF6055D8)),
+      ),
+    ),
+  );
 }

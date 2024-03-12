@@ -74,4 +74,3 @@ class _ItemState extends State<Item> {
   }
 }
 
-// container of column first column stack
