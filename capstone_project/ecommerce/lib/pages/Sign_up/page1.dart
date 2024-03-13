@@ -1,5 +1,4 @@
 import 'package:ecommerce/pages/Sign_up/page2.dart';
-import 'package:ecommerce/pages/Sign_up/page3.dart';
 
 import 'package:flutter/material.dart';
 
@@ -100,21 +99,25 @@ class _WelcomePageState extends State<WelcomePage> {
             child: ElevatedButton(
               onPressed: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => SignUp_Screen()));
+                    context, MaterialPageRoute(builder: (context) => SignIn_Screen()));
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0XFF6055D8)),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Get Started",
-                    style: TextStyle(color: Colors.white),
+                  Padding(
+                    padding: EdgeInsets.only(left: 60),
+                    child: Text(
+                      "Get Started",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
+                 
                   Icon(
-                    Icons.arrow_right_alt,
+                     Icons.navigate_next_outlined,
                     color: Colors.white,
-                    size: 40,
+                    size: 30,
                   )
                 ],
               ), // Add your button text here
