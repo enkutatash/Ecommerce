@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "364138459034",
+    "project_id": "ecommerce-capstone-bf4ac",
+    "storage_bucket": "ecommerce-capstone-bf4ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364138459034:android:f7de0d7ca63e016d8f1423",
+        "android_client_info": {
+          "package_name": "com.example.ecommerce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5w0folbPg2OyIGbs0YuJX19NSunXsxRQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

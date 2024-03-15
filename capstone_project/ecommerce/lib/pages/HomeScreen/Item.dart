@@ -17,7 +17,7 @@ class _ItemState extends State<Item> {
     return GestureDetector(
       onTap: () {},
       child: Container(
-          height: height * 0.18,
+          height: height * 0.2,
           width: width * 0.32,
           decoration: BoxDecoration(
               color: const Color(0XFFF8F7F7),

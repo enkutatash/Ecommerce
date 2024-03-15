@@ -2,19 +2,39 @@
 
 import 'package:flutter/material.dart';
 import 'package:ecommerce/pages/Sign_up/page3.dart';
+// import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ecommerce/pages/FireBase/firebase_auth.dart';
+import 'package:ecommerce/pages/General_Screen.dart';
+
 class SignIn_Screen extends StatefulWidget {
-      SignIn_Screen({super.key});
+  SignIn_Screen({super.key});
 
   @override
   State<SignIn_Screen> createState() => _SignIn_ScreenState();
 }
 
 class _SignIn_ScreenState extends State<SignIn_Screen> {
+ late final Firebase_auth_service _auth;
+  // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final email = TextEditingController();
-  final username = TextEditingController();
   final password = TextEditingController();
-  
+
   bool ischecked = false;
+
+  @override
+  void initState() {
+    _auth = Firebase_auth_service(context);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    email.dispose();
+    password.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -27,9 +47,9 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           const Padding(
-              padding: EdgeInsets.only(bottom:10.0),
-              child:  Text("Lets's sign you in",
+            const Padding(
+              padding: EdgeInsets.only(bottom: 10.0),
+              child: Text("Lets's sign you in",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             ),
             Text(
@@ -38,16 +58,15 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                 color: Colors.black.withOpacity(0.5),
               ),
             ),
-            
             SizedBox(
               height: height * 0.03,
             ),
             Text(
-              "Username or Email",
+              "Email",
               style: TextStyle(color: Colors.black.withOpacity(0.5)),
             ),
-            textfield("username", Icons.person_4_outlined, username,
-                TextInputType.text,
+            textfield(
+                "username", Icons.person_4_outlined, email, TextInputType.text,
                 suffixIcon: Icons.done),
             SizedBox(
               height: height * 0.03,
@@ -59,7 +78,6 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
             textfield("*********", Icons.lock_outline, password,
                 TextInputType.visiblePassword,
                 suffixIcon: Icons.visibility_outlined),
-          
             SizedBox(
               height: height * 0.4,
             ),
@@ -70,19 +88,14 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                   height: height * 0.05,
                   width: width * 0.6,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignUp_Screen()));
-                    },
+                    onPressed: _signIn,
                     style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0XFF6055D8)),
+                        backgroundColor: const Color(0XFF6055D8)),
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(left:60.0),
+                          padding: EdgeInsets.only(left: 60.0),
                           child: Text(
                             "Sign In ",
                             style: TextStyle(color: Colors.white),
@@ -104,7 +117,9 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
-                            context, MaterialPageRoute(builder: (context)=>SignUp_Screen()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUp_Screen()));
                       },
                       child: const Text(
                         "Sign up",
@@ -119,6 +134,37 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
         ),
       )),
     );
+  }
+
+    void _showSnackBar(String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {
+          // Some action to take when the user presses the action button
+        },
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void _signIn() async {
+    String Email = email.text;
+    String Password = password.text;
+
+    User? user = await _auth.signInWithEmailAndPassword(Email, Password);
+    if (user != null) {
+      print("User is successfully Sign in");
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => General_Screen()));
+      _showSnackBar("User is successfully Sign in");
+
+    } else {
+      print("Some error happend on login user");
+      _showSnackBar("Some error happend on create user");
+
+    }
   }
 }
 

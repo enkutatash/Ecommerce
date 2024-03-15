@@ -1,7 +1,10 @@
 // import 'dart:ffi';
 
+import 'package:ecommerce/pages/General_Screen.dart';
 import 'package:ecommerce/pages/Sign_up/page2.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ecommerce/pages/FireBase/firebase_auth.dart';
 
 class SignUp_Screen extends StatefulWidget {
   SignUp_Screen({super.key});
@@ -11,11 +14,29 @@ class SignUp_Screen extends StatefulWidget {
 }
 
 class _SignUp_ScreenState extends State<SignUp_Screen> {
+  // final Firebase_auth_service _auth = Firebase_auth_service();
+  late final Firebase_auth_service _auth;
+
   final email = TextEditingController();
   final username = TextEditingController();
   final password = TextEditingController();
-  final PasswordConfirm = TextEditingController();
+
   bool ischecked = false;
+
+  @override
+  void initState() {
+    _auth = Firebase_auth_service(context);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    email.dispose();
+    username.dispose();
+    password.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -86,7 +107,7 @@ class _SignUp_ScreenState extends State<SignUp_Screen> {
                   width: width * 0.01,
                 ),
                 const Expanded(
-                child: Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("By creating an account, you agree to our "),
@@ -95,8 +116,8 @@ class _SignUp_ScreenState extends State<SignUp_Screen> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       )
                     ],
-                      ),
-                 )
+                  ),
+                )
               ],
             ),
             SizedBox(
@@ -109,27 +130,22 @@ class _SignUp_ScreenState extends State<SignUp_Screen> {
                   height: height * 0.05,
                   width: width * 0.6,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignUp_Screen()));
-                    },
+                    onPressed: _signUp,
                     style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0XFF6055D8)),
                     child: const Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(left:60.0),
+                          padding: EdgeInsets.only(left: 60.0),
                           child: Text(
-                            "Sign up ",
+                            "Signup ",
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
                         Icon(
-                            Icons.navigate_next_outlined,
-                           color: Colors.white,
+                          Icons.navigate_next_outlined,
+                          color: Colors.white,
                           size: 30,
                         )
                       ],
@@ -160,6 +176,36 @@ class _SignUp_ScreenState extends State<SignUp_Screen> {
         ),
       )),
     );
+  }
+
+  void _showSnackBar(String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {
+          // Some action to take when the user presses the action button
+        },
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void _signUp() async {
+    String UserName = username.text;
+    String Email = email.text;
+    String Password = password.text;
+
+    User? user = await _auth.signUpWithEmailAndPassword(Email, Password);
+    if (user != null) {
+      print("User is successfully created");
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => General_Screen()));
+      _showSnackBar("User is successfully created");
+    } else {
+      print("Some error happend on create user");
+      _showSnackBar("Some error happend on create user");
+    }
   }
 }
 
