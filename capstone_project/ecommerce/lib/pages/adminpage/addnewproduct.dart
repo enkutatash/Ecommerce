@@ -54,6 +54,34 @@ class _AddNewProductState extends State<AddNewProduct> {
             SizedBox(
               height: height * 0.03,
             ),
+             Container(
+                  height: height * 0.07,
+                  width: width * 0.8,
+                  child: ElevatedButton(
+                    onPressed:(){},
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(18.0),
+        side:const BorderSide(color: Color(0XFF6055D8)), // Adjust border color here
+      ),
+    ),
+                    ),
+                    child:const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.file_upload_outlined,color: Color(0XFF6055D8),)
+                        ,Text(
+                          "Upload product picture",
+                          style: TextStyle(color:Color(0XFF6055D8)),
+                        ),
+                      ],
+                    ), // Add your button text here
+                  ),
+                ),
+                SizedBox(
+              height: height * 0.03,
+            ),
             const Text(
               "Product Name",
               style: TextStyle(color: Colors.black),
