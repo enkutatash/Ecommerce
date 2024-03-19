@@ -2,9 +2,14 @@
 
 import 'dart:convert'; // Import for base64 encoding
 import 'dart:io';
-
+import 'package:random_string/random_string.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/pages/General_Screen.dart';
 import 'package:ecommerce/pages/Sign_up/page2.dart';
+import 'package:ecommerce/pages/adminpage/database.dart';
+import 'package:ecommerce/pages/adminpage/editnewproduct.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -63,6 +68,7 @@ class _AddNewProductState extends State<AddNewProduct> {
   @override
   void initState() {
     _auth = Firebase_auth_service(context);
+
     super.initState();
   }
 
@@ -75,17 +81,39 @@ class _AddNewProductState extends State<AddNewProduct> {
     super.dispose();
   }
 
+  Future<void> addproduct(
+      TextEditingController Name,
+      TextEditingController Price,
+      TextEditingController Amount,
+      TextEditingController Description,
+      String _imageUrl) async {
+    CollectionReference product =
+        FirebaseFirestore.instance.collection('Products');
+
+    return product
+        .add({
+          'Name': Name.text,
+          'Price': double.parse(Price.text),
+          'Amount': int.parse(Amount.text),
+          'Description': Description.text,
+          'Image': _imageUrl,
+        })
+        .then((value) => print("product added successfully!"))
+        .catchError((error) => print("Failed to add product: $error"));
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
-            child: Padding(
-                    padding: EdgeInsets.only(
+        child: Padding(
+          padding: EdgeInsets.only(
               top: height * 0.05, left: width * 0.1, right: width * 0.1),
-                    child: Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text("Add New Product",
@@ -148,7 +176,8 @@ class _AddNewProductState extends State<AddNewProduct> {
               textfield(
                 "Nike shoes",
                 Name,
-                TextInputType.text,),
+                TextInputType.text,
+              ),
               SizedBox(
                 height: height * 0.03,
               ),
@@ -156,23 +185,15 @@ class _AddNewProductState extends State<AddNewProduct> {
                 "Product Price",
                 style: TextStyle(color: Colors.black),
               ),
-              textfield(
-                "\$200",
-                Price,
-                TextInputType.number
-              ),
+              textfield("\$200", Price, TextInputType.number),
               SizedBox(
                 height: height * 0.03,
               ),
               const Text(
-              "Amount",
+                "Amount",
                 style: TextStyle(color: Colors.black),
               ),
-              textfield(
-                "1",
-                Amount,
-                TextInputType.number
-              ),
+              textfield("1", Amount, TextInputType.number),
               SizedBox(
                 height: height * 0.03,
               ),
@@ -180,7 +201,7 @@ class _AddNewProductState extends State<AddNewProduct> {
                 "Product Description",
                 style: TextStyle(color: Colors.black),
               ),
-              textfield("Description", Description,TextInputType.text),
+              textfield("Description", Description, TextInputType.text),
               SizedBox(
                 height: height * 0.03,
               ),
@@ -214,10 +235,12 @@ class _AddNewProductState extends State<AddNewProduct> {
                     height: height * 0.07,
                     width: width * 0.8,
                     child: ElevatedButton(
-                      onPressed: _addProduct,
+                      onPressed: () async {
+                        await addproduct(Name, Price, Amount, Description, _imageUrl);
+                      },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0XFF6055D8)),
-                      child: Text(
+                      child: const Text(
                         "Add Product ",
                         style: TextStyle(color: Colors.white),
                       ), // Add your button text here
@@ -226,9 +249,9 @@ class _AddNewProductState extends State<AddNewProduct> {
                 ],
               ),
             ],
-                    ),
-                  ),
-          )),
+          ),
+        ),
+      )),
     );
   }
 
@@ -243,12 +266,6 @@ class _AddNewProductState extends State<AddNewProduct> {
       ),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
-  void _addProduct() async {
-    String name = Name.text;
-    double price = Price.text as double;
-    String description = Description.text;
   }
 }
 

@@ -1,5 +1,6 @@
 import 'package:ecommerce/pages/General_Screen.dart';
 import 'package:ecommerce/pages/Sign_up/page1.dart';
+import 'package:ecommerce/pages/Sign_up/page3.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
