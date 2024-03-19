@@ -1,6 +1,6 @@
 // import 'dart:ffi';
 
- import 'dart:convert'; // Import for base64 encoding
+import 'dart:convert'; // Import for base64 encoding
 import 'dart:io';
 
 import 'package:ecommerce/pages/General_Screen.dart';
@@ -35,31 +35,30 @@ class _AddNewProductState extends State<AddNewProduct> {
   final Name = TextEditingController();
   final Price = TextEditingController();
   final Description = TextEditingController();
+  final Amount = TextEditingController();
   String _imageUrl = "FrontPage_asset/image/front_girl.png";
 
   bool ischecked = false;
 
+  Future<void> _imagePicker() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image == null) return;
 
-Future<void> _imagePicker() async {
-  final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  if (image == null) return;
-
-  if (kIsWeb) {
-    // Convert image data to base64 for web
-    final bytes = await image.readAsBytes();
-    final base64Image = base64Encode(bytes);
-    setState(() {
-      _imageUrl = 'data:image/jpeg;base64,$base64Image';
-    });
-  } else {
-    // For mobile platforms, set the image directly
-    final imageTemp = File(image.path);
-    setState(() {
-      _image = imageTemp;
-    });
+    if (kIsWeb) {
+      // Convert image data to base64 for web
+      final bytes = await image.readAsBytes();
+      final base64Image = base64Encode(bytes);
+      setState(() {
+        _imageUrl = 'data:image/jpeg;base64,$base64Image';
+      });
+    } else {
+      // For mobile platforms, set the image directly
+      final imageTemp = File(image.path);
+      setState(() {
+        _image = imageTemp;
+      });
+    }
   }
-}
-
 
   @override
   void initState() {
@@ -69,6 +68,7 @@ Future<void> _imagePicker() async {
 
   @override
   void dispose() {
+    Amount.dispose();
     Name.dispose();
     Price.dispose();
     Description.dispose();
@@ -93,46 +93,50 @@ Future<void> _imagePicker() async {
               SizedBox(
                 height: height * 0.03,
               ),
-              Row(
-                children: [
-                  Container(
-                    height: height * 0.1,
-                    width: width * 0.5,
-                    child: ElevatedButton(
-                      onPressed: _imagePicker,
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14.0),
-                            side: const BorderSide(
-                                color: Color(0XFF6055D8)), // Adjust border color here
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Container(
+                      height: height * 0.1,
+                      width: width * 0.5,
+                      child: ElevatedButton(
+                        onPressed: _imagePicker,
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14.0),
+                              side: const BorderSide(
+                                  color: Color(
+                                      0XFF6055D8)), // Adjust border color here
+                            ),
                           ),
                         ),
-                        
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.file_upload_outlined,
+                              color: Color(0XFF6055D8),
+                            ),
+                            Text(
+                              "Upload product picture",
+                              style: TextStyle(color: Color(0XFF6055D8)),
+                            ),
+                          ],
+                        ), // Add your button text here
                       ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.file_upload_outlined,
-                            color: Color(0XFF6055D8),
-                          ),
-                          Text(
-                            "Upload product picture",
-                            style: TextStyle(color: Color(0XFF6055D8)),
-                          ),
-                        ],
-                      ), // Add your button text here
                     ),
-                  ),
-  _imageUrl != null
-  ? Image.network(
-      _imageUrl,
-      width: width * 0.5,
-      height: height * 0.1,
-    )
-  : Image.asset("FrontPage_asset/image/front_girl.png"),
-                ],
+                    _imageUrl != null
+                        ? Image.network(
+                            _imageUrl,
+                            width: width * 0.4,
+                            height: height * 0.1,
+                          )
+                        : Image.asset("FrontPage_asset/image/front_girl.png"),
+                  ],
+                ),
               ),
               SizedBox(
                 height: height * 0.03,
@@ -144,7 +148,7 @@ Future<void> _imagePicker() async {
               textfield(
                 "Nike shoes",
                 Name,
-              ),
+                TextInputType.text,),
               SizedBox(
                 height: height * 0.03,
               ),
@@ -155,21 +159,41 @@ Future<void> _imagePicker() async {
               textfield(
                 "\$200",
                 Price,
+                TextInputType.number
               ),
               SizedBox(
                 height: height * 0.03,
               ),
-              Text(
-                "Product Description",
-                style: TextStyle(color: Colors.black.withOpacity(0.5)),
+              const Text(
+              "Amount",
+                style: TextStyle(color: Colors.black),
               ),
-              textfield("Description", Description),
+              textfield(
+                "1",
+                Amount,
+                TextInputType.number
+              ),
+              SizedBox(
+                height: height * 0.03,
+              ),
+              const Text(
+                "Product Description",
+                style: TextStyle(color: Colors.black),
+              ),
+              textfield("Description", Description,TextInputType.text),
+              SizedBox(
+                height: height * 0.03,
+              ),
+              const Text(
+                "Product Size",
+                style: TextStyle(color: Colors.black),
+              ),
               SizedBox(
                 height: height * 0.03,
               ),
               DropdownButton<String>(
                 value: _selectedSize,
-                hint: Text("Select Size"),
+                hint: const Text("Select Size"),
                 items: size.map((String item) {
                   return DropdownMenuItem<String>(
                     value: item,
@@ -201,9 +225,6 @@ Future<void> _imagePicker() async {
                   ),
                 ],
               ),
-             
-
-             
             ],
                     ),
                   ),
@@ -234,9 +255,11 @@ Future<void> _imagePicker() async {
 Widget textfield(
   String hint,
   TextEditingController controller,
+  TextInputType keyboardType,
 ) {
   return TextField(
     controller: controller,
+    keyboardType: keyboardType,
     decoration: InputDecoration(
       hintText: hint,
       hintStyle: const TextStyle(
